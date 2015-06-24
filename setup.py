@@ -1,7 +1,7 @@
 from distutils.core import setup
 
 setup(
-    name='Sentani',
-    packages=['sentani',],
+    name='pysentani',
+    packages=['pysentani',],
     version='0.1dev',
 )
