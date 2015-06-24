@@ -1,0 +1,10 @@
+package:
+  name: sentani
+  version: 0.1.dev
+
+requirements:
+  build:
+    - python
+  run:
+    - python
+
