@@ -141,14 +141,20 @@ def create_village_name_map(survey, pie_column):
             vn = means.index,
             lat = means['_gps_point_latitude'],
             lon = means['_gps_point_longitude'],
-            size = [0.001 for x in means[pie_column]],
+            size = [10 for x in means[pie_column]],
             angle = means[pie_column]*6.28))
 
     wedges = bkg.Wedge(x='lon', y='lat', radius='size',
-                       start_angle=0, end_angle='angle', fill_color='green', fill_alpha=0.5)
+                       start_angle=0, end_angle='angle',
+                       fill_color='green', fill_alpha=0.5,
+                       radius_units='screen')
     wedges2 = bkg.Wedge(x = 'lon', y = 'lat', radius = 'size',
-                        start_angle='angle', end_angle=6.28, fill_color='red', fill_alpha=0.5)
-    text = bkg.Text(x='lon', y='lat', text='vn', text_color='000', text_font_size = '12pt')
+                        start_angle='angle', end_angle=6.28,
+                        fill_color='red', fill_alpha=0.5,
+                        radius_units='screen')
+    text = bkg.Text(x='lon', y='lat',
+                    text='vn', text_color='000',
+                    text_font_size = '12pt', x_offset=10)
 
     map_options = bkm.GMapOptions(lat=-2.588, lng=140.5170, zoom=11, map_type='terrain')
     plot = bkm.GMapPlot(x_range = bkm.Range1d(),
