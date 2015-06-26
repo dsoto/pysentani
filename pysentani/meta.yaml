@@ -1,6 +1,6 @@
 package:
   name: pysentani
-  version: 0.1.dev
+  version: 0.2.0
 
 requirements:
   build:
