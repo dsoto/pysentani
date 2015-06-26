@@ -126,3 +126,42 @@ village_map = {'Abar' : 'Abar',
 
 def meta_village(survey):
     return survey['village_name'].apply(lambda x: village_map.get(x))
+
+import bokeh.models.glyphs as bkg
+import bokeh.models as bkm
+import bokeh.plotting as bkp
+
+def create_village_name_map(survey, pie_column):
+
+    means = survey.groupby('village_name')['_gps_point_latitude',
+                                           '_gps_point_longitude',
+                                           pie_column].mean()
+
+    source = bkm.ColumnDataSource(data = dict(
+            vn = means.index,
+            lat = means['_gps_point_latitude'],
+            lon = means['_gps_point_longitude'],
+            size = [0.001 for x in means[pie_column]],
+            angle = means[pie_column]*6.28))
+
+    wedges = bkg.Wedge(x='lon', y='lat', radius='size',
+                       start_angle=0, end_angle='angle', fill_color='green', fill_alpha=0.5)
+    wedges2 = bkg.Wedge(x = 'lon', y = 'lat', radius = 'size',
+                        start_angle='angle', end_angle=6.28, fill_color='red', fill_alpha=0.5)
+    text = bkg.Text(x='lon', y='lat', text='vn', text_color='000', text_font_size = '12pt')
+
+    map_options = bkm.GMapOptions(lat=-2.588, lng=140.5170, zoom=11, map_type='terrain')
+    plot = bkm.GMapPlot(x_range = bkm.Range1d(),
+                        y_range = bkm.Range1d(),
+                        map_options = map_options,
+                        title = "Lake Sentani" + pie_column)
+    plot.add_glyph(source, wedges)
+    plot.add_glyph(source, wedges2)
+    plot.add_glyph(source, text)
+
+    #plot.add_tools(pan, wheel_zoom, box_zoom, resize, reset)
+    plot.add_tools(bkm.BoxZoomTool(), bkm.PanTool(), bkm.ResetTool(), bkm.WheelZoomTool())
+    plot.add_layout(bkm.LinearAxis(axis_label='Longitude (deg)', major_tick_in=0), 'below')
+    plot.add_layout(bkm.LinearAxis(axis_label='Latitude (deg)', major_tick_in=0), 'left')
+    return plot
+
