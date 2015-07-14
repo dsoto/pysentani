@@ -1,0 +1,10 @@
+package:
+  name: pysentani
+  version: 0.2.2
+
+requirements:
+  build:
+    - python
+  run:
+    - python
+
