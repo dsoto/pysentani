@@ -1,10 +1,11 @@
 package:
   name: pysentani
-  version: 0.2.3
+  version: 0.2.4
 
 requirements:
   build:
     - python
+    - setuptools
   run:
     - python
 
