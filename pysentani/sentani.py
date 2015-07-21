@@ -1,10 +1,35 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
+import os as os
+from datetime import datetime
+import re as re
 
 def get_survey():
     return pd.read_excel('../../../data-clean/sentani-merged-cleaned-2015-06-10.xlsx',
                          na_values=[''])
+def find_survey(dirt):
+    paths = []
+    for (dir, _, files) in os.walk(dirt):
+        for f in files:
+            path = os.path.join(dir, f)       
+            if ".xlsx" in path:
+                paths.append(path)
+    timestamps = []
+    for i in paths:
+        captured = re.search("([0-9]{4}\-[0-9]{2}\-[0-9]{2})", i)
+        timestamps.append(captured)
+    xx = 0 
+    ind = 0
+    rec_tstamp = datetime.strptime(timestamps[0].group(1), '%Y-%m-%d')
+    for i in timestamps:
+        temp = datetime.strptime(i.group(1), '%Y-%m-%d')
+        if rec_tstamp < temp:
+            rec_tstamp = datetime.strptime(i.group(1), '%Y-%m-%d')
+            ind = xx;
+        xx+=1
+    print (paths[ind])
+    return pd.read_excel((paths[ind]), na_values=[''])
 
 def strip_chart(column):
     #plt.plot(survey[column], np.ones(len(survey)), 'ko')
