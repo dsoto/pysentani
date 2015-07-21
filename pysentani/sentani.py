@@ -1,6 +1,9 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
+import os as os
+from datetime import datetime
+import re as re
 
 def get_survey():
     return pd.read_excel('../../../data-clean/sentani-merged-cleaned-2015-06-10.xlsx',
