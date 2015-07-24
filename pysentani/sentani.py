@@ -37,7 +37,7 @@ def pie_it_up(col, df, dropna=True):
     second = vc.get(0)
     if dropna!=True:
         NaN = vc[0]-vc[1]
-        labels = ['Yes', 'No', 'NaN']
+        labels = ['Yes', 'No', 'No Response']
         colors = ['green', 'red', 'lightcoral']
     else:
         labels = ['Yes', 'No']
