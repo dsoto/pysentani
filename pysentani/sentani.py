@@ -196,3 +196,25 @@ def create_village_name_map(survey, pie_column):
     plot.add_layout(bkm.LinearAxis(axis_label='Latitude (deg)', major_tick_in=0), 'left')
     return plot
 
+def elec_expenditure_monthly(survey):
+    #Usage: survey['electricity_monthly'] = elec_expenditure_monthly(our_survey)
+    frequency = {'PLN_expenditure':'monthly',
+    'community_microgrid_expenditure':'monthly',
+    'genset_expenditure':'weekly'}
+
+    multiplier = {'monthly':1, 'weekly':4}
+
+    # create new columns with same monthly frequency
+    for column in frequency.keys():
+        # adjust expenditure frequency
+        expenditure = survey[column] * multiplier[frequency[column]]
+        new_column = column + '_monthly'
+        survey[new_column] = expenditure
+    
+    temp = survey[['PLN_expenditure_monthly', 
+               'community_microgrid_expenditure_monthly', 
+               'genset_expenditure_monthly']]
+    # the sum function will only output NULL if all columns are NULL
+    survey['electricity_monthly'] = temp.sum(axis=1)
+    
+    return survey['electricity_monthly']
