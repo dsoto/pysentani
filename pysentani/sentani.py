@@ -32,18 +32,18 @@ def find_survey(dirt):
     return pd.read_excel((paths[ind]), na_values=[''])
 
 def pie_it_up(col, df, dropna=True):
-    vc = df[col].value_counts(normalize=True,dropna=dropna)
+    vc = df[col].value_counts(normalize=True, dropna=dropna)
     yes = vc.get(1)
     second = vc.get(0)
-    if dropna!=True:
-        NaN = vc[0]-vc[1]
+    if dropna != True:
+        NaN = vc[0] - vc[1]
         labels = ['Yes', 'No', 'No Response']
         colors = ['green', 'red', 'lightcoral']
     else:
         labels = ['Yes', 'No']
         colors = ['green', 'red']
-    explode = (0.1,0,0)
-    p=plt.pie(sizes,explode,labels,colors,autopct='%1.1f%%',shadow=True,startangle=90)
+    explode = (0.1, 0,0)
+    p=plt.pie(sizes, explode, labels, colors, autopct='%1.1f%%', shadow=True, startangle=90)
     plt.axis('equal')
     return p
 def strip_chart(column):
