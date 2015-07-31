@@ -12,14 +12,14 @@ def find_survey(dirt):
     paths = []
     for (dir, _, files) in os.walk(dirt):
         for f in files:
-            path = os.path.join(dir, f)       
+            path = os.path.join(dir, f)
             if ".xlsx" in path:
                 paths.append(path)
     timestamps = []
     for i in paths:
         captured = re.search("([0-9]{4}\-[0-9]{2}\-[0-9]{2})", i)
         timestamps.append(captured)
-    xx = 0 
+    xx = 0
     ind = 0
     rec_tstamp = datetime.strptime(timestamps[0].group(1), '%Y-%m-%d')
     for i in timestamps:
@@ -197,12 +197,15 @@ def create_village_name_map(survey, pie_column):
     return plot
 
 def elec_expenditure_monthly(survey):
-    #Usage: survey['electricity_monthly'] = elec_expenditure_monthly(our_survey)
+    # Usage: survey['electricity_monthly'] = elec_expenditure_monthly(our_survey)
     frequency = {'PLN_expenditure':'monthly',
     'community_microgrid_expenditure':'monthly',
-    'genset_expenditure':'weekly'}
+    'genset_expenditure':'daily'}
 
-    multiplier = {'monthly':1, 'weekly':4}
+    # according to the codebook, the indonesian text for generator
+    # expenditures are given as a daily frequency, however, the data
+    # makes more sense (fewer high outliers) when interpreted as weekly
+    multiplier = {'monthly':1, 'weekly':4, 'daily':30}
 
     # create new columns with same monthly frequency
     for column in frequency.keys():
@@ -210,11 +213,11 @@ def elec_expenditure_monthly(survey):
         expenditure = survey[column] * multiplier[frequency[column]]
         new_column = column + '_monthly'
         survey[new_column] = expenditure
-    
-    temp = survey[['PLN_expenditure_monthly', 
-               'community_microgrid_expenditure_monthly', 
-               'genset_expenditure_monthly']]
+
+    temp = survey[['PLN_expenditure_monthly',
+                   'community_microgrid_expenditure_monthly',
+                   'genset_expenditure_monthly']]
     # the sum function will only output NULL if all columns are NULL
     survey['electricity_monthly'] = temp.sum(axis=1)
-    
+
     return survey['electricity_monthly']
