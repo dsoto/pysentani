@@ -31,7 +31,14 @@ def find_survey(dirt):
     print (paths[ind])
     return pd.read_excel((paths[ind]), na_values=[''])
 
-def pie_it_up(col, df, dropna=True):
+def pie_chart_boolean(col, df, dropna=True):
+    '''
+    Usage: new_pie_chart = pie_chart_boolean("column_string", dataframe, dropnulls)
+    "column_string" will be a string column from your dataframe.
+    dataframe is your pandas dataframe.
+    dropnulls will be either True or False.
+    
+    '''
     vc = df[col].value_counts(normalize=True, dropna=dropna)
     yes = vc.get(1)
     second = vc.get(0)
