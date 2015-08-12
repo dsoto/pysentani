@@ -31,6 +31,28 @@ def find_survey(dirt):
     print (paths[ind])
     return pd.read_excel((paths[ind]), na_values=[''])
 
+def pie_chart_boolean(col, df, dropna=True):
+    '''
+    Usage: new_pie_chart = pie_chart_boolean("column_string", dataframe, dropnulls)
+    "column_string" will be a string column from your dataframe.
+    dataframe is your pandas dataframe.
+    dropnulls will be either True or False.
+    
+    '''
+    vc = df[col].value_counts(normalize=True, dropna=dropna)
+    yes = vc.get(1)
+    second = vc.get(0)
+    if dropna != True:
+        NaN = vc[0] - vc[1]
+        labels = ['Yes', 'No', 'No Response']
+        colors = ['green', 'red', 'lightcoral']
+    else:
+        labels = ['Yes', 'No']
+        colors = ['green', 'red']
+    explode = (0.1, 0,0)
+    p=plt.pie(sizes, explode, labels, colors, autopct='%1.1f%%', shadow=True, startangle=90)
+    plt.axis('equal')
+    return p
 def strip_chart(column):
     #plt.plot(survey[column], np.ones(len(survey)), 'ko')
     #plt.semilogx(survey[column], np.zeros(len(survey)), 'ko')
